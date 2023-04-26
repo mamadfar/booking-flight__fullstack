@@ -17,3 +17,24 @@ export interface ISearchAirport {
     city_code: string;
     country_code: string;
 }
+
+export interface IPassengers {
+    adult: number;
+    child: number;
+    infant: number;
+    student: number;
+};
+
+export interface IPassengersTypeList {
+    id: number,
+    name: PassengersType,
+    value: number
+}
+
+export type FlightClassType = 'Economy' | 'Business' | 'First';
+export type OperatorType = "+" | "-";
+export type PassengersType = "adult" | "child" | "infant" | "student";
+export enum DIRECTION {
+    FROM = "FROM",
+    TO = "TO"
+}
