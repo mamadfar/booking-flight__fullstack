@@ -1,6 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, forwardRef, LegacyRef, Ref} from 'react';
 import {motion} from "framer-motion";
-import {Segmented} from "antd";
+import {Button, Segmented} from "antd";
 import {OperatorBtn} from "../../../../components";
 import {
     FlightClassType,
@@ -9,84 +9,50 @@ import {
     OperatorType,
     PassengersType
 } from "../../../../types/Flight.type";
+import withClickOutside, {IWithClickOutsideProps} from "../../../../hooks/WithClickOutside";
 
-interface IPassengersProps {
+interface IPassengersProps extends IWithClickOutsideProps {
     flightClass: FlightClassType;
     setFlightClass: (flightClass: any) => void;
     passengersTypeList: ReadonlyArray<IPassengersTypeList>;
     operator: (operator: OperatorType, name: PassengersType) => void;
     passengers: IPassengers;
-    setPassengerSectionVisible: (passengerSectionVisible: boolean) => void;
 }
 
-const Passengers: FC<IPassengersProps> = ({flightClass, setFlightClass, passengers, operator, passengersTypeList, setPassengerSectionVisible}) => {
+const Passengers: FC<IPassengersProps> = forwardRef(({flightClass, setFlightClass, passengers, operator, passengersTypeList, open, setOpen}, ref: Ref<HTMLDivElement>) => {
     return (
-        <motion.div
-            onMouseLeave={() => setPassengerSectionVisible(false)}
-            className="absolute top-10 right-0 left-0 w-fit mx-auto rounded-md p-2 space-y-3 z-10 bg-white"
-            variants={{
-                visible: {opacity: 1}, hidden: {opacity: 0}
-            }} initial="hidden" animate="visible" transition={{ease: "easeOut", delay: 0.3}}>
-            <div>
-                <Segmented options={['Economy', 'Business', 'First']} value={flightClass}
-                           onChange={setFlightClass}/>
-            </div>
-            {passengersTypeList.map(passenger => (
-                <div key={passenger.id} className="flex justify-between items-center">
-                    <p>{passenger.name}</p>
+        <>
+            <Button
+                // ref={passengersBtnRef}
+                // onFocus={passengersBtnRef.current}
+                // onBlur={passengersBtnRef.current = null}
+                className="bg-white" size="large"
+                onClick={() => setOpen(!open)}>Passengers</Button>
+            {open && (
+                <motion.div
+                    // onMouseLeave={() => setPassengerSectionVisible(false)}
+                    className="absolute top-10 right-0 left-0 w-fit mx-auto rounded-md p-2 space-y-3 z-10 bg-white"
+                    variants={{
+                        visible: {opacity: 1}, hidden: {opacity: 0}
+                    }} initial="hidden" animate="visible" transition={{ease: "easeOut", delay: 0.3}} ref={ref}>
                     <div>
-                        <OperatorBtn disabled={passengers[passenger.name] <= passenger.value} onClick={() => operator("-", passenger.name)} operator="-"/>
-                        <span className="mx-2">{passengers[passenger.name]}</span>
-                        <OperatorBtn onClick={() => operator("+", passenger.name)} operator="+"/>
+                        <Segmented options={['Economy', 'Business', 'First']} value={flightClass}
+                                   onChange={setFlightClass}/>
                     </div>
-                </div>
-            ))}
-            {/*<div className="flex justify-between items-center">*/}
-            {/*    <p>Adult</p>*/}
-            {/*    <div>*/}
-            {/*        <OperatorBtn disabled={passengers.adult <= 1} onClick={() => operator("-", "adult")} operator="-"/>*/}
-            {/*        <span className="mx-2">{passengers.adult}</span>*/}
-            {/*        <OperatorBtn onClick={() => operator("+", "adult")} operator="+"/>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="flex justify-between items-center">*/}
-            {/*    <p>Child</p>*/}
-            {/*    <div>*/}
-            {/*        <Button className="border-sky-500" shape="circle">*/}
-            {/*            -*/}
-            {/*        </Button>*/}
-            {/*        <span className="mx-2">{1}</span>*/}
-            {/*        <Button type="primary" className="bg-sky-500" shape="circle">*/}
-            {/*            +*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="flex justify-between items-center">*/}
-            {/*    <p>Infant</p>*/}
-            {/*    <div>*/}
-            {/*        <Button className="border-sky-500" shape="circle">*/}
-            {/*            -*/}
-            {/*        </Button>*/}
-            {/*        <span className="mx-2">{1}</span>*/}
-            {/*        <Button type="primary" className="bg-sky-500" shape="circle">*/}
-            {/*            +*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="flex justify-between items-center">*/}
-            {/*    <p>Student</p>*/}
-            {/*    <div>*/}
-            {/*        <Button className="border-sky-500" shape="circle">*/}
-            {/*            -*/}
-            {/*        </Button>*/}
-            {/*        <span className="mx-2">{1}</span>*/}
-            {/*        <Button type="primary" className="bg-sky-500" shape="circle">*/}
-            {/*            +*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-        </motion.div>
+                    {passengersTypeList.map(passenger => (
+                        <div key={passenger.id} className="flex justify-between items-center">
+                            <p>{passenger.name}</p>
+                            <div>
+                                <OperatorBtn disabled={passengers[passenger.name] <= passenger.value} onClick={() => operator("-", passenger.name)} operator="-"/>
+                                <span className="mx-2">{passengers[passenger.name]}</span>
+                                <OperatorBtn onClick={() => operator("+", passenger.name)} operator="+"/>
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
+            )}
+        </>
     );
-};
+});
 
-export default Passengers;
+export default withClickOutside(Passengers);

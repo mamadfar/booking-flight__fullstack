@@ -1,5 +1,5 @@
 
-export interface ISearchAirport {
+export interface IAirport {
     ID: number;
     gr: string;
     english_city: string;
@@ -23,7 +23,7 @@ export interface IPassengers {
     child: number;
     infant: number;
     student: number;
-};
+}
 
 export interface IPassengersTypeList {
     id: number,
@@ -32,6 +32,7 @@ export interface IPassengersTypeList {
 }
 
 export type FlightClassType = 'Economy' | 'Business' | 'First';
+export type BookerType = 'round-trip' | 'one-way';
 export type OperatorType = "+" | "-";
 export type PassengersType = "adult" | "child" | "infant" | "student";
 export enum DIRECTION {
