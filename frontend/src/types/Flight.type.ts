@@ -18,6 +18,56 @@ export interface IAirport {
     country_code: string;
 }
 
+export interface IFlight {
+    API: string;
+    AdultPrice: string;
+    Aircraft: string;
+    ArrivalDate: string;
+    ArrivalTerminal: string;
+    ArrivalTime: string;
+    Baggage: string;
+    Baggage_Details: {
+        title: string;
+        value: string;
+    }[] | null;
+    BookId: string;
+    CabinType: string;
+    ChildPrice: string;
+    Currency: string;
+    DepartureDate: string;
+    DepartureTerminal: string;
+    DepartureTime: string;
+    Destination: string;
+    DestinationCity: string;
+    Details: IFlight[];
+    Duration: string;
+    FlightClass: string;
+    FlightNumber: string;
+    Index: string;
+    InfantPrice: string;
+    IsCharter: boolean;
+    Logo: string;
+    Price: string;
+    ProviderId: string;
+    ProviderName: string;
+    Refundable: boolean;
+    ResBookDesigCode: string | null;
+    Rules: string;
+    Seats: string;
+    Source: string;
+    SourceCity: string;
+    Stops: number;
+    SupplierName: string;
+    Tax: string | null
+    Tax_Details: {
+        amount: number;
+        code: string;
+        currency: string;
+        pax_type: string;
+        title: string;
+    }[] | null
+}
+
 export interface IPassengers {
     adult: number;
     child: number;

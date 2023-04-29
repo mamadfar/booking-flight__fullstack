@@ -41,9 +41,6 @@ axios.interceptors.response.use(
                 case 429:
                     console.log("Too many request.");
                     break;
-                case 401:
-                    console.log("Please login again.");
-                    break;
                 case 422:
                     console.log("Please check your data.");
                     break;

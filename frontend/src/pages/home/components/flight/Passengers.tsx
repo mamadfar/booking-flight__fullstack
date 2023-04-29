@@ -9,7 +9,7 @@ import {
     OperatorType,
     PassengersType
 } from "../../../../types/Flight.type";
-import withClickOutside, {IWithClickOutsideProps} from "../../../../hooks/WithClickOutside";
+import withClickOutside, {IWithClickOutsideProps} from "../../../../hoc/WithClickOutside";
 
 interface IPassengersProps extends IWithClickOutsideProps {
     flightClass: FlightClassType;

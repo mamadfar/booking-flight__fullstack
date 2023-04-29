@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Layout, Menu, MenuProps} from "antd";
 import {AppstoreOutlined, MailOutlined} from "@ant-design/icons";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 const { Header: AntHeader } = Layout;
 
@@ -10,14 +10,14 @@ const items: MenuProps['items'] = [
         key: 'home',
         icon: <MailOutlined />,
         label: (
-            <Link to="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
         ),
     },
     {
         key: 'about',
         icon: <AppstoreOutlined />,
         label: (
-            <Link to="/about">About</Link>
+            <NavLink to="/about">About</NavLink>
         ),
     },
 ];

@@ -2,7 +2,7 @@ import React, {FC, forwardRef, LegacyRef} from 'react';
 import {Input} from "antd";
 import {DIRECTION, IAirport} from "../../../../types/Flight.type";
 import {DebouncedFunc} from "lodash";
-import withClickOutside, {IWithClickOutsideProps} from "../../../../hooks/WithClickOutside";
+import withClickOutside, {IWithClickOutsideProps} from "../../../../hoc/WithClickOutside";
 
 export interface IFromAirportProps extends IWithClickOutsideProps{
     from: string;

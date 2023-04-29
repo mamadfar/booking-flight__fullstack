@@ -1,12 +1,13 @@
 import {createBrowserRouter} from "react-router-dom";
-import {About, Home, Login} from "../pages";
+import {About, Home, Flights} from "../pages";
 import MainLayout from "../layout/MainLayout";
+import FlightsProvider from "../hooks/useFlights";
 
 const router = createBrowserRouter([
     {
         id: "home",
         path: "/",
-        element: <MainLayout><Home/></MainLayout>,
+        element: <FlightsProvider><MainLayout><Home/></MainLayout></FlightsProvider>,
     },
     {
         id: "about",
@@ -14,9 +15,9 @@ const router = createBrowserRouter([
         element: <MainLayout><About/></MainLayout>
     },
     {
-        id: "login",
-        path: "/login",
-        element: <Login/>
+        id: "flights",
+        path: "/flights",
+        element: <FlightsProvider><MainLayout><Flights/></MainLayout></FlightsProvider>
     },
 ]);
 

@@ -1,8 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, DatePicker, Form} from "antd";
-import {RangePickerProps} from "antd/es/date-picker";
-import dayjs from "dayjs";
-import useAuth from "../../../../hooks/useAuth";
+import React, {useEffect, useState} from 'react';
+import {Button, DatePicker, Form, notification, Spin} from "antd";
 import {searchAirportsService, searchTicketService} from "../../../../services/flight.service";
 import type {
     DIRECTION,
@@ -11,23 +8,19 @@ import type {
     IPassengersTypeList,
     IAirport,
     PassengersType,
-    BookerType
 } from "../../../../types/Flight.type";
 import {debounce} from "lodash";
 import TicketType from "./TicketType";
-import AirportSearch from "./AirportSearch";
 import Passengers from "./Passengers";
 import {MdOutlineChangeCircle} from "react-icons/md";
 import FromAirport from "./FromAirport";
 import ToAirport from "./ToAirport";
+import {useAuth} from "../../../../hooks";
+import {useFlights} from "../../../../hooks/useFlights";
+import {useNavigate} from "react-router-dom";
+import {dateFormat, dateFormatter, disabledDate} from "../../../../utils/date.util";
 
 const {RangePicker} = DatePicker;
-const dateFormat = 'YYYY-MM-DD';
-
-const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    // Can not select days before today
-    return current && current < dayjs(new Date().setDate(new Date().getDate() - 1));
-};
 
 const PASSENGERS_TYPE_LIST: ReadonlyArray<IPassengersTypeList> = [
     {
@@ -52,47 +45,7 @@ const PASSENGERS_TYPE_LIST: ReadonlyArray<IPassengersTypeList> = [
     },
 ]
 
-// export interface IInitialState {
-//     ticketType: BookerType,
-//     flightClass: FlightClassType,
-//     fromResults: ReadonlyArray<ISearchAirport> | null,
-//     from: string,
-//     toResults: ReadonlyArray<ISearchAirport> | null,
-//     to: string,
-// }
-//
-// const initialState: IInitialState = {
-//     ticketType: "round-trip",
-//     flightClass: "Economy",
-//     fromResults: [],
-//     from: "",
-//     toResults: [],
-//     to: "",
-// }
-//
-// const flightReducer = (draft: IInitialState, action: any): any => {
-//     switch (action.type) {
-//         case (TICKET_TYPE):
-//             draft.ticketType = action.payload;
-//             break;
-//         default:
-//             return "s"
-//     }
-// }
-
-interface IFrom extends Partial<IAirport> {
-    from: string;
-    selectedAirport: string;
-}
-
-interface ITo extends Partial<IAirport> {
-    to: string;
-    selectedAirport: string;
-}
-
-const Flight = () => {
-
-    // const [{ticketType}, dispatch] = useImmerReducer(flightReducer, initialState);
+const FlightSearch = () => {
 
     const [ticketType, setTicketType] = useState("round-trip");
     const [from, setFrom] = useState<string>("");
@@ -109,8 +62,12 @@ const Flight = () => {
         student: 0
     });
     const [date, setDate] = useState<any>();
+    const [loading, setLoading] = useState(false);
 
     const {token, getCredential} = useAuth();
+    const {flights, flightsHandler} = useFlights();
+    const [api, contextHolder] = notification.useNotification();
+    const navigation = useNavigate()
 
     const getAirportDetail = async (action: DIRECTION) => {
         const controller = new AbortController();
@@ -131,10 +88,12 @@ const Flight = () => {
 
     const getAirportDetailDebouncer = debounce((action: DIRECTION) => getAirportDetail(action), 300);
 
+    //? Handle sum or subtract of passengers count
     const operator = (operate: "+" | "-", name: PassengersType) => {
         setPassengers({...passengers, [name]: operate === "-" ? passengers[name] - 1 : passengers[name] + 1})
     }
 
+    //? Handle switch ports
     const handleChangePorts = () => {
         setFrom(to);
         setTo(from);
@@ -144,7 +103,18 @@ const Flight = () => {
         setToSelectedAirport(fromSelectedAirport);
     }
 
+    //? Notification
+    const openNotification = (message: string, description: string) => {
+        api.info({
+            message,
+            description,
+            placement: "bottom",
+        });
+    };
+
+    //? Get the flights results and redirect to the fights page
     const onSubmit = async () => {
+        setLoading(true);
         const payload = {
             TwoWay: ticketType === "round-trip",
             Adult: passengers.adult,
@@ -155,20 +125,31 @@ const Flight = () => {
                 {
                     Source: fromSelectedAirport?.city_code,
                     Destination: toSelectedAirport?.city_code,
-                    Date: dayjs(date[0]).format(dateFormat),
-                    ReturnDate: dayjs(date[1]).format(dateFormat)
+                    Date: dateFormatter(date[0], dateFormat),
+                    ReturnDate: dateFormatter(date[1], dateFormat)
                 }
             ]
 
-        }
+        };
+
         try {
-            const {data} = await searchTicketService(payload);
-            console.log(data);
+            const {data, status} = await searchTicketService(payload);
+            if (status === 200 && !data.Value.length) {
+                openNotification("No Ticket!", `We are sorry, from ${fromSelectedAirport?.english_city} to ${toSelectedAirport?.english_city}, at ${dateFormatter(date[0], dateFormat)} we don't have any offer for you!`)
+            } else if (status === 200 && data.Value.length) {
+                flightsHandler(data.Value);
+                navigation("/flights");
+            } else {
+                console.log(data);
+            }
+            setLoading(false);
         } catch (e) {
+            setLoading(false);
             return e;
         }
     }
 
+    //? Grab the whole data of each airport on click on each airport
     const handleSelectedAirport = (airport: IAirport, action: DIRECTION, setOpen: () => void) => {
         if (action === "FROM") {
             setFromSelectedAirport(airport);
@@ -182,8 +163,7 @@ const Flight = () => {
     }
 
     useEffect(() => {
-        // console.log(fromSelectedAirport)
-        // console.log(toSelectedAirport)
+        console.log(flights)
         if (!token) {
             const controller = new AbortController();
             getCredential(controller.signal);
@@ -192,46 +172,50 @@ const Flight = () => {
                 controller.abort("Request canceled by user.");
             }
         }
-    }, [token, fromSelectedAirport, toSelectedAirport]);
+    }, [token, flights]);
 
     return (
-        <Form onFinish={onSubmit}>
-            <div className="mb-3 ml-1">
-                <TicketType ticketType={ticketType} setTicketType={setTicketType}/>
-            </div>
-            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
-                <div className="w-full flex flex-1 justify-center relative">
-                    <FromAirport from={from} setFrom={setFrom} fromResults={fromResults}
-                                 getAirportDetailDebouncer={getAirportDetailDebouncer}
-                                 handleSelectedAirport={handleSelectedAirport}/>
-                    <MdOutlineChangeCircle
-                        onClick={handleChangePorts}
-                        className="absolute top-2 w-6 h-6 z-10 self-center fill-cyan-700 cursor-pointer"/>
-                    <ToAirport to={to} setTo={setTo} toResults={toResults}
-                               getAirportDetailDebouncer={getAirportDetailDebouncer}
-                               handleSelectedAirport={handleSelectedAirport}/>
+        <Spin spinning={loading}>
+            <Form onFinish={onSubmit}>
+                {contextHolder}
+                <div className="mb-3 ml-1">
+                    <TicketType ticketType={ticketType} setTicketType={setTicketType}/>
                 </div>
-                <div className="text-center w-full flex-1">
-                    <RangePicker
-                        size="large"
-                        className="min-w-[250px]"
-                        placeholder={["Departure", "Return"]}
-                        disabledDate={disabledDate}
-                        format={dateFormat}
-                        value={date}
-                        onChange={setDate}
-                    />
+                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
+                    <div className="w-full flex flex-1 justify-center relative">
+                        <FromAirport from={from} setFrom={setFrom} fromResults={fromResults}
+                                     getAirportDetailDebouncer={getAirportDetailDebouncer}
+                                     handleSelectedAirport={handleSelectedAirport}/>
+                        <MdOutlineChangeCircle
+                            onClick={handleChangePorts}
+                            className="absolute top-2 w-6 h-6 z-10 self-center fill-cyan-700 cursor-pointer"/>
+                        <ToAirport to={to} setTo={setTo} toResults={toResults}
+                                   getAirportDetailDebouncer={getAirportDetailDebouncer}
+                                   handleSelectedAirport={handleSelectedAirport}/>
+                    </div>
+                    <div className="text-center w-full flex-1">
+                        <RangePicker
+                            size="large"
+                            className="min-w-[250px]"
+                            placeholder={["Departure", "Return"]}
+                            disabledDate={disabledDate}
+                            format={dateFormat}
+                            value={date}
+                            onChange={setDate}
+                        />
+                    </div>
+                    <div className="relative text-center flex-[0.5]">
+                        <Passengers passengers={passengers} flightClass={flightClass} setFlightClass={setFlightClass}
+                                    operator={operator} passengersTypeList={PASSENGERS_TYPE_LIST}/>
+                    </div>
                 </div>
-                <div className="relative text-center flex-[0.5]">
-                    <Passengers passengers={passengers} flightClass={flightClass} setFlightClass={setFlightClass}
-                                operator={operator} passengersTypeList={PASSENGERS_TYPE_LIST}/>
+                <div className="text-center mx-auto lg:ml-auto mt-4">
+                    <Button htmlType="submit" type="primary" size="large" className="bg-cyan-700">Search
+                        Flights</Button>
                 </div>
-            </div>
-            <div className="text-center mx-auto lg:ml-auto mt-4">
-                <Button htmlType="submit" type="primary" size="large" className="bg-cyan-700">Search Flights</Button>
-            </div>
-        </Form>
+            </Form>
+        </Spin>
     );
 };
 
-export default Flight;
+export default FlightSearch;
