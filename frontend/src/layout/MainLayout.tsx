@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {Layout} from "antd";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import {Header} from "../components";
 
 const {Content, Footer} = Layout;
@@ -11,10 +11,10 @@ interface IMainLayoutProps {
 
 const MainLayout: FC<IMainLayoutProps> = ({children}) => {
     return (
-        <Layout className="h-screen">
+        <Layout className="min-h-screen">
             <Header/>
-            <Content className="site-layout px-10">
-                <div className="h-full grid grid-cols-1 place-content-center">
+            <Content className="site-layout p-10">
+                <div className="">
                     {children}
                 </div>
             </Content>

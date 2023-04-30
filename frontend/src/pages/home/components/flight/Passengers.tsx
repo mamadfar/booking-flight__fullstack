@@ -26,7 +26,7 @@ const Passengers: FC<IPassengersProps> = forwardRef(({flightClass, setFlightClas
                 // ref={passengersBtnRef}
                 // onFocus={passengersBtnRef.current}
                 // onBlur={passengersBtnRef.current = null}
-                className="bg-white" size="large"
+                className="bg-white w-full max-w-[150px]" size="large"
                 onClick={() => setOpen(!open)}>Passengers</Button>
             {open && (
                 <motion.div

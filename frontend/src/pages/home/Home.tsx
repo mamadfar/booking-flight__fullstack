@@ -1,6 +1,7 @@
-import React from 'react';
-import {CheckIn, Flight, FlightStatus} from "./components";
-import {Button, Tabs, TabsProps} from "antd";
+import React, {useEffect} from 'react';
+import {CheckIn, FlightSearch, FlightStatus} from "./components";
+import {Tabs, TabsProps} from "antd";
+import {useAuth} from "../../hooks";
 
 const onChange = (key: string) => {
     console.log(key);
@@ -10,7 +11,7 @@ const items: TabsProps['items'] = [
     {
         key: '1',
         label: `Flight`,
-        children: <Flight/>,
+        children: <FlightSearch/>,
     },
     {
         key: '2',
@@ -25,10 +26,22 @@ const items: TabsProps['items'] = [
 ];
 
 const Home = () => {
+    const {token, getCredential} = useAuth();
+
+    useEffect(() => {
+        if (!token) {
+            const controller = new AbortController();
+            getCredential(controller.signal);
+
+            return () => {
+                controller.abort("Request canceled by user.");
+            }
+        }
+    }, [token]);
 
     return (
         // <div className="w-full lg:w-3/4 xl:w-2/3 2xl:w-1/2 mx-auto">
-        <div className="w-full md:w-3/4 xl:w-1/2 mx-auto">
+        <div className="w-full lg:w-3/4 xl:w-3/5 mx-auto">
             <Tabs defaultActiveKey="1" type="card" items={items} onChange={onChange} />
         </div>
     );

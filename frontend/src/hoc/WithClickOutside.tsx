@@ -1,4 +1,4 @@
-import React, {ComponentType, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState} from "react";
+import React, {ComponentType, useEffect, useRef, useState} from "react";
 
 export interface IWithClickOutsideProps{
     open?: boolean;
@@ -10,7 +10,7 @@ const withClickOutside = <T, >(WrappedComponent: ComponentType<T & IWithClickOut
     return (props: T) => {
         const [open, setOpen] = useState(false);
 
-        const ref = useRef<HTMLElement>();
+        const ref = useRef<HTMLElement | null>(null);
 
         useEffect(() => {
             const handleClickOutside = (event: any) => {
