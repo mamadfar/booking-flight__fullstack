@@ -5,25 +5,31 @@ import {Button, Collapse, Row} from "antd";
 import {IoIosAirplane, IoIosPricetag} from "react-icons/io";
 import {MdAirlineSeatReclineExtra} from "react-icons/md";
 import {FAKE_DATA} from "../utils/fake.util";
+import {Helmet} from "react-helmet-async";
 
 const {Panel} = Collapse;
 
 const Flights = () => {
 
     const navigate = useNavigate();
-    const {flights} = useFlights();
+    const {flights, isLoading} = useFlights();
 
     useEffect(() => {
-        // if (!tickets.length) navigate("/", {replace: true});
+        // console.log(flights)
+        if (flights.length === 0) navigate("/", {replace: true});
     }, [flights])
 
-
     return (
+<>
+    <Helmet>
+        <title>Flights List</title>
+    </Helmet>
+    {flights.length ? (
         <Row className="flex-col w-full lg:w-3/4 xl:w-3/5 mx-auto">
-            {FAKE_DATA.map((flight, index) => (
+            {flights.map((flight, index) => (
                 <div key={index}>
                     <Row
-                         className="flex-col sm:flex-row items-center border rounded-t-md px-2 py-1 bg-white">
+                        className="flex-col sm:flex-row items-center border rounded-t-md px-2 py-1 bg-white">
                         <div className="text-center flex-[0.75]">
                             <img className="mx-auto" src={`https://test.bilifo.com${flight.Logo}`}
                                  alt={flight.ProviderName}/>
@@ -110,6 +116,8 @@ const Flights = () => {
                 </div>
             ))}
         </Row>
+    ) : (<h1>Please wait...</h1>)}
+</>
     );
 };
 

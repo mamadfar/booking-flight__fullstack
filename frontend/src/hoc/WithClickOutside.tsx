@@ -18,7 +18,17 @@ const withClickOutside = <T, >(WrappedComponent: ComponentType<T & IWithClickOut
                     setOpen(false);
                 }
             };
+            const handleTabPressed = (event: any) => {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setOpen(false);
+                }
+            };
             document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("keyup", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+                document.removeEventListener("keyup", handleClickOutside);
+            }
         }, [ref]);
 
         return <WrappedComponent {...props} open={open} setOpen={setOpen} ref={ref}/>;

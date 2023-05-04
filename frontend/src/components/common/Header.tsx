@@ -10,14 +10,14 @@ const items: MenuProps['items'] = [
         key: 'home',
         icon: <MailOutlined />,
         label: (
-            <NavLink to="/">Home</NavLink>
+            <Link to="/">Home</Link>
         ),
     },
     {
         key: 'about',
         icon: <AppstoreOutlined />,
         label: (
-            <NavLink to="/about">About</NavLink>
+            <Link to="/about">About</Link>
         ),
     },
 ];

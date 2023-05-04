@@ -13,27 +13,32 @@ export const useFlights = () => {
 };
 
 interface IInitialState {
-    flights: ReadonlyArray<IFlight>
+    flights: ReadonlyArray<IFlight>;
+    isLoading: boolean;
 }
 
 const initialState: IInitialState = {
-    flights: []
+    flights: [],
+    isLoading: true
 }
 
 const ticketsReducer = (draft: IInitialState, action: any) => {
     switch (action.type) {
         case "GET_TICKETS":
-            draft.flights = action.payload
+            draft.isLoading = false;
+            draft.flights = action.payload;
             break;
+        default: return draft;
     }
 }
 
 const FlightsProvider:FC<{children: ReactNode}> = ({children}) => {
 
-    const [{flights}, dispatch] = useImmerReducer(ticketsReducer, initialState);
+    const [{flights, isLoading}, dispatch] = useImmerReducer(ticketsReducer, initialState);
 
     const value = {
-        flights: flights,
+        flights,
+        isLoading,
         flightsHandler: useCallback((payload: ReadonlyArray<IFlight>) => {
             dispatch({type: "GET_TICKETS", payload})
         }, [dispatch])

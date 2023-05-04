@@ -1,29 +1,30 @@
-import React, {FC, forwardRef, LegacyRef} from 'react';
+import React, {ChangeEvent, FC, forwardRef, LegacyRef} from 'react';
 import {Empty, Input, Spin} from "antd";
-import {DIRECTION, IAirport} from "../../../../types/Flight.type";
-// import {DebouncedFunc} from "lodash";
+import {DIRECTION} from "../../../../types/Flight.type";
 import withClickOutside, {IWithClickOutsideProps} from "../../../../hoc/WithClickOutside";
 import useAirportSearch from "../../../../hooks/useAirportSearch";
 
-// export interface IFromAirportProps extends IWithClickOutsideProps{
-//     from: string;
-//     setFrom(from: string): void;
-//     handleSelectedAirport(airport: IAirport, action: "FROM" | "TO", setOpen: ()=> void): void;
-//     fromResults: IAirport[];
-//     getAirportDetailDebouncer: DebouncedFunc<(action: "FROM" | "TO") => Promise<unknown>>;
-// }
+// todo: [delete]
 
 const FromAirport: FC<IWithClickOutsideProps> = forwardRef(({open, setOpen}, ref: LegacyRef<HTMLDivElement>) => {
 
-    const {from, setFrom, fromResults, getAirportDetailDebouncer, handleSelectedAirport, isLoading} = useAirportSearch();
+    const {from, setFrom, fromResults, getAirportDetailDebouncer, handleSelectedAirport, isLoading, fromSelectedAirport} = useAirportSearch();
+
+    const checkValidSearchOnBlur = () => {
+        if (fromSelectedAirport?.english_city && fromSelectedAirport?.english_city.toLowerCase() !== from.toLowerCase()) {
+            setFrom(fromSelectedAirport?.english_city);
+        } else if (!fromSelectedAirport?.english_city) {
+            setFrom("");
+        }
+    }
 
     return (
         <div className="relative mr-1" ref={ref}>
             <Input size="large" className="w-full max-w-[200px]" placeholder="From" value={from}
-                   onChange={(e) => setFrom(e.target.value)}
+                   onChange={e => setFrom(e.target.value)}
                    onKeyUp={() => getAirportDetailDebouncer(DIRECTION.FROM)}
                    onFocus={() => setOpen(!open)}
-                   // onBlur={() => setIsOpen(false)}
+                   onBlur={checkValidSearchOnBlur}
             />
             {open ? (
                 <div className="absolute top-10 left-0 z-10 bg-white rounded-md w-full min-w-max max-h-[310px] overflow-y-auto">

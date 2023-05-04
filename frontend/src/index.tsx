@@ -4,21 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ConfigProvider, theme} from "antd";
+import {HelmetProvider} from "react-helmet-async";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <ConfigProvider theme={{
-            algorithm: theme.defaultAlgorithm,
-            token: {
-                colorPrimary: "#1d91cc",
-                colorBgLayout: "#d4e9f0"
-            }
-        }}>
-            <App/>
-        </ConfigProvider>
+        <HelmetProvider>
+            <ConfigProvider theme={{
+                algorithm: theme.defaultAlgorithm,
+                token: {
+                    colorPrimary: "#1d91cc",
+                    colorBgLayout: "#d4e9f0"
+                }
+            }}>
+                <App/>
+            </ConfigProvider>
+        </HelmetProvider>
     </React.StrictMode>
 );
 

@@ -1,103 +1,74 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
-import {Input} from "antd";
-import {MdOutlineChangeCircle} from "react-icons/md";
+import React, {FC, forwardRef, LegacyRef} from 'react';
+import {Empty, Input, Spin} from "antd";
 import {DebouncedFunc} from "lodash";
-import {IAirport} from "../../../../types/Flight.type";
+import {DIRECTION, IAirport} from "../../../../types/Flight.type";
+import withClickOutside, {IWithClickOutsideProps} from "../../../../hoc/WithClickOutside";
 
 interface IAirPortSearchProps {
-    from: string;
-    setFrom(from: string): void;
-    fromResults: IAirport[];
-    to: string;
-    setTo(to: string): void;
-    toResults: IAirport[];
+    searchResults: IAirport[];
+    handleSelectedAirport: (airport: IAirport, direction: DIRECTION, setOpen: () => void) => void;
+    selectedAirport: IAirport | null;
+    name: DIRECTION;
+    value: string;
+    setValue: (value: string) => void;
+    direction: DIRECTION;
     getAirportDetailDebouncer: DebouncedFunc<(action: "FROM" | "TO") => Promise<unknown>>;
-    handleChangePorts: () => void;
-    setToSelectedAirport: (airport: IAirport) => void;
-    setFromSelectedAirport: (airport: IAirport) => void;
+    checkValidSearchOnBlur: (selectedAirport: IAirport | null, value: string, setValue: (value: string) => void) => void;
+    isLoading: boolean;
 }
 
-const AirportSearch: FC<IAirPortSearchProps> = ({
-                                                    from,
-                                                    setFrom,
-                                                    to,
-                                                    setTo,
-                                                    getAirportDetailDebouncer,
-                                                    handleChangePorts,
-                                                    fromResults,
-                                                    toResults,
-                                                    setToSelectedAirport,
-                                                    setFromSelectedAirport
-                                                }) => {
-
-    const [showResults, setShowResults] = useState({
-        from: false,
-        to: false
-    });
-    const inputRef = useRef<any>(null);
-
-    useEffect(() => {
-        // window.addEventListener("click" ,() => {
-        //     setShowResults({from: false, to: false})
-        // })
-    }, [])
-
+const AirportSearch: FC<IAirPortSearchProps & IWithClickOutsideProps> = forwardRef(({
+                                                                                        searchResults,
+                                                                                        handleSelectedAirport,
+                                                                                        name,
+                                                                                        value,
+                                                                                        setValue,
+                                                                                        direction,
+                                                                                        getAirportDetailDebouncer,
+                                                                                        checkValidSearchOnBlur,
+                                                                                        isLoading,
+                                                                                        selectedAirport,
+                                                                                        open,
+                                                                                        setOpen
+                                                                                    }, ref: LegacyRef<HTMLDivElement>) => {
     return (
-        <>
-            <div className="relative mr-1">
-                {/*<Select size="large" className="w-32 max-w-[200px]" showSearch value={from}*/}
-                {/*         options={fromResults}*/}
-                {/*        onSearch={(e) => setFrom(e)} onKeyUp={() => getAirportDetailDebouncer("FROM")}/>*/}
-                <Input size="large" className="w-full max-w-[200px]" placeholder="From" value={from}
-                       onChange={(e) => setFrom(e.target.value)}
-                       onKeyUp={() => getAirportDetailDebouncer("FROM")}
-                       onFocus={() => setShowResults({from: true, to: false})}
-                    // onBlur={() => setShowResults({from: false, to: false})}
-                />
-                {(fromResults.length && showResults.from) ? (
-                    <div className="absolute top-10 left-1 z-10 bg-white rounded-md min-w-max">
-                        {fromResults.map(airport => (
-                            <div key={airport.ID} onClick={() => {
-                                setShowResults(prevState => ({...prevState, from: false}));
-                                setFromSelectedAirport(airport);
-                            }} className="hover:bg-sky-500 hover:text-white last:rounded-b-md first:rounded-t-md p-2 transition duration-75 cursor-pointer">
-                                <p>{airport.english_city}</p>
-                                <small>{airport.english_airport}</small>
-                            </div>
-                        ))}
-                    </div>
-                    // <AirportsResults trigger="from" setShowResults={setShowResults}
-                    //                  selectedAirport={setFromSelectedAirport} results={fromResults}/>
-                ) : null}
-            </div>
-            <MdOutlineChangeCircle
-                onClick={handleChangePorts}
-                className="absolute top-2 w-6 h-6 z-10 self-center fill-cyan-700 cursor-pointer"/>
-            <div className="relative ml-1">
-                <Input size="large" className="w-full max-w-[200px]" placeholder="To" value={to}
-                       onChange={(e) => setTo(e.target.value)}
-                       onKeyUp={() => getAirportDetailDebouncer("TO")}
-                       onFocus={() => setShowResults({from: false, to: true})}
-                    // onBlur={() => setShowResults({from: false, to: false})}
-                />
-                {(toResults.length && showResults.to) ? (
-                    <div className="absolute top-10 left-1 z-10 bg-white rounded-md min-w-max">
-                        {toResults.map(airport => (
-                            <div key={airport.ID} onClick={() => {
-                                setShowResults(prevState => ({...prevState, to: false}));
-                                setToSelectedAirport(airport);
-                            }} className="hover:bg-sky-500 hover:text-white last:rounded-b-md first:rounded-t-md p-2 transition duration-75 cursor-pointer">
-                                <p>{airport.english_city}</p>
-                                <small>{airport.english_airport}</small>
-                            </div>
-                        ))}
-                    </div>
-                    // <AirportsResults trigger="to" setShowResults={setShowResults} selectedAirport={setToSelectedAirport}
-                    //                  results={toResults}/>
-                ) : null}
-            </div>
-        </>
+        <div className="relative mr-1" ref={ref}>
+            <Input size="large" className="w-full max-w-[200px]" placeholder={name} value={value}
+                   onChange={e => {
+                       setValue(e.target.value);
+                       getAirportDetailDebouncer(direction);
+                   }}
+                // onKeyUp={() => getAirportDetailDebouncer(direction)}
+                   onFocus={() => setOpen(!open)}
+                   onBlur={() => checkValidSearchOnBlur(selectedAirport, value, setValue)}
+            />
+            {open ? (
+                <div
+                    className="absolute top-10 left-0 z-10 bg-white rounded-md w-full min-w-max max-h-[310px] overflow-y-auto">
+                    {!isLoading ? (
+                        <>
+                            {searchResults.length ? (
+                                <>
+                                    {searchResults.map((airport: any) => (
+                                        <div key={airport.ID}
+                                             onClick={() => handleSelectedAirport(airport, direction, () => setOpen(!open))}
+                                             className="hover:bg-sky-500 hover:text-white last:rounded-b-md first:rounded-t-md p-2 transition duration-75 cursor-pointer">
+                                            <p>{airport.english_city}</p>
+                                            <small>{airport.english_airport}</small>
+                                        </div>
+                                    ))}
+                                </>
+                            ) : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>)}
+                        </>
+                    ) : (
+                        <div className="h-32 flex justify-center items-center">
+                            <Spin spinning/>
+                        </div>
+                    )}
+                </div>
+            ) : null}
+        </div>
     );
-};
+});
 
-export default AirportSearch;
+export default withClickOutside(AirportSearch);

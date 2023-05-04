@@ -14,6 +14,8 @@ import useAirportSearch from "../../../../hooks/useAirportSearch";
 //     getAirportDetailDebouncer: DebouncedFunc<(action: "FROM" | "TO") => Promise<unknown>>;
 // }
 
+// todo: [delete]
+
 const ToAirport: FC<IWithClickOutsideProps> = forwardRef(({open, setOpen}, ref: LegacyRef<HTMLDivElement>) => {
 
     const {to, setTo, toResults, getAirportDetailDebouncer, handleSelectedAirport, isLoading} = useAirportSearch();
