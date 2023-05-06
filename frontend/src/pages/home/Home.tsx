@@ -3,10 +3,6 @@ import {CheckIn, FlightSearch, FlightStatus} from "./components";
 import {Tabs, TabsProps} from "antd";
 import {useAuth} from "../../hooks";
 
-const onChange = (key: string) => {
-    console.log(key);
-};
-
 const items: TabsProps['items'] = [
     {
         key: '1',
@@ -40,9 +36,8 @@ const Home = () => {
     }, [token]);
 
     return (
-        // <div className="w-full lg:w-3/4 xl:w-2/3 2xl:w-1/2 mx-auto">
         <div className="w-full lg:w-3/4 xl:w-3/5 mx-auto">
-            <Tabs defaultActiveKey="1" type="card" items={items} onChange={onChange} />
+            <Tabs defaultActiveKey="1" type="card" items={items} />
         </div>
     );
 };

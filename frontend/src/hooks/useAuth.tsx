@@ -7,8 +7,8 @@ const UseAuth = () => {
 
     const getCredential = async (signal: AbortSignal) => {
         const payload = {
-            Username: process.env.REACT_APP_USERNAME,
-            Password: process.env.REACT_APP_PASSWORD
+            Username: process.env.REACT_APP_USERNAME || "",
+            Password: process.env.REACT_APP_PASSWORD || ""
         }
         try {
             const {data} = await authService(payload, signal);

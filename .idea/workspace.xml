@@ -3,20 +3,26 @@
   <component name="ChangeListManager">
     <list default="true" id="295347ad-cc75-458a-8ff4-f59d7074d954" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/FlightsContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/FlightsContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hoc/WithClickOutside.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hoc/WithClickOutside.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useAirportSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useAirportSearch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/constants/flight.constant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/flight.constant.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useAuth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useAuth.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useFlights.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useFlights.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/logo.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Flights.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Flights.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/AirportSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/AirportSearch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/AirportSearch.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/AirportsResults.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/DebouncerSelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/DebouncerSelect.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/FlightSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/FlightSearch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/FromAirport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/FromAirport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/ToAirport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/ToAirport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/FromAirport.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/Passengers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/Passengers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/components/flight/ToAirport.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,25 +42,28 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/msaba/Desktop/new-project/practice/React/interviews/book-flight-ticket/backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;web-ide.project.structure&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\msaba\\Desktop\\new-project\\practice\\React\\interviews\\book-flight-ticket\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/msaba/Desktop/new-project/practice/React/interviews/book-flight-ticket/frontend/src/assets",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "nodejs_package_manager_path": "yarn",
+    "settings.editor.selected.configurable": "web-ide.project.structure",
+    "ts.external.directory.path": "C:\\Users\\msaba\\Desktop\\new-project\\practice\\React\\interviews\\book-flight-ticket\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\msaba\Desktop\new-project\practice\React\interviews\book-flight-ticket\frontend\src\assets" />
       <recent name="C:\Users\msaba\Desktop\new-project\practice\React\interviews\book-flight-ticket\backend" />
+      <recent name="C:\Users\msaba\Desktop\new-project\practice\React\interviews\book-flight-ticket" />
+      <recent name="C:\Users\msaba\Desktop\new-project\practice\React\interviews\book-flight-ticket\frontend\public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\msaba\Desktop\new-project\practice\React\interviews\book-flight-ticket\frontend\src\pages\home\components\flight" />

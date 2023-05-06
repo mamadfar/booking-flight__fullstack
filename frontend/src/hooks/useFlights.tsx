@@ -2,6 +2,7 @@ import {FC, ReactNode, useCallback, useContext} from 'react';
 import {FlightsContext} from "../context/FlightsContext";
 import {useImmerReducer} from "use-immer";
 import {IFlight} from "../types/Flight.type";
+import {GET_FLIGHTS} from "../constants/flight.constant";
 
 export const useFlights = () => {
 
@@ -24,7 +25,7 @@ const initialState: IInitialState = {
 
 const ticketsReducer = (draft: IInitialState, action: any) => {
     switch (action.type) {
-        case "GET_TICKETS":
+        case GET_FLIGHTS:
             draft.isLoading = false;
             draft.flights = action.payload;
             break;
@@ -40,7 +41,7 @@ const FlightsProvider:FC<{children: ReactNode}> = ({children}) => {
         flights,
         isLoading,
         flightsHandler: useCallback((payload: ReadonlyArray<IFlight>) => {
-            dispatch({type: "GET_TICKETS", payload})
+            dispatch({type: GET_FLIGHTS, payload})
         }, [dispatch])
     }
 

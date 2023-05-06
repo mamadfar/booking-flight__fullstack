@@ -42,7 +42,7 @@ const DebounceSelect: FC<IDebounceSelectProps<any>> = ({
                                 <small className="whitespace-pre-wrap">{airport.english_airport}</small>
                             </>
                         ),
-                        value: airport.city_code,
+                        value: `${airport.city_code}-${airport.ID}`,
                         key: airport.ID,
                         title: airport.english_city
                     }),

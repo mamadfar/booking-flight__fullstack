@@ -23,14 +23,10 @@ const Passengers: FC<IPassengersProps> = forwardRef(({flightClass, setFlightClas
     return (
         <>
             <Button
-                // ref={passengersBtnRef}
-                // onFocus={passengersBtnRef.current}
-                // onBlur={passengersBtnRef.current = null}
                 className="bg-white w-full max-w-[150px]" size="large"
                 onClick={() => setOpen(!open)}>Passengers</Button>
             {open && (
                 <motion.div
-                    // onMouseLeave={() => setPassengerSectionVisible(false)}
                     className="absolute top-10 right-0 left-0 w-fit mx-auto rounded-md p-2 space-y-3 z-10 bg-white"
                     variants={{
                         visible: {opacity: 1}, hidden: {opacity: 0}
